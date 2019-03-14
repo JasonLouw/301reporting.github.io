@@ -5,6 +5,18 @@
     width: 360px;
 }
 
+.info
+{
+    padding-top: 60px;
+    width: 100%;
+
+}
+
+.table
+{
+  width: 80%;
+}
+
 .bigLogoRow
 {
     margin-top: 40px;
@@ -46,7 +58,6 @@
     font-family: 'Roboto', sans-serif;
 }
 
-
 .rightLineRow
 {
     height: 20px;
@@ -54,7 +65,6 @@
     border-top-left-radius: 20px; 
     border-bottom-left-radius: 20px; 
 }
-
 
 .leftLineRow
 {
@@ -109,3 +119,9 @@
  
     width: 100px;
 }
+
+.downloadPDF
+{
+    text-align: center;
+}
+
