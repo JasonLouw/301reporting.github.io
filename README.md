@@ -1,5 +1,3 @@
-COS301 phase 3: group ocean reporting
-
 
 ![up logo](https://www.up.ac.za/media/shared/Legacy/UserFiles/up-logo-pt-line2.jpg)
 
