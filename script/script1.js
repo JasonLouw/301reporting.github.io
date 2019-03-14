@@ -56,7 +56,20 @@ $(document).ready(function(){
         }
         
     });
-    
-    
-  
-});
+
+    $.getJSON("tempJson/ClientNofication.json" , function(data){
+        jsonObj.push(data);
+    });
+var tables = "<table><td>";
+
+    var vObj = JSON.parse(jsonObj);
+    function clientInformation(){
+        $(".submitBur").click(function(){
+            $(".info").change(function(){
+                $.each(vObj),function(p1,p2,p3,p4){
+                    console.log(vObj.p1,vObj.p2, vObj.p3,vObj.p4);
+                    }
+                });
+            });
+        }
+    });
