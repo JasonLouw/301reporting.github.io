@@ -1,4 +1,3 @@
-# 301reporting.github.io
 COS301 phase 3: group ocean reporting
 
 
