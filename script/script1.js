@@ -30,6 +30,7 @@ $(document).ready(function(){
                         }
                     });*/
 
+                    
     function request(url, startDate1, endDate1)
     {
         $.get( url, {startDate:startDate1,endDate:endDate1}, 
@@ -40,6 +41,28 @@ $(document).ready(function(){
                // return obj;
             });
     }
+
+    function ClientInformation()
+    {
+        var tableDat = '<table class="table"><thead><th>timestamp</th><th>clientID</th><th>code</th><th>description</th></thead><tbody>';
+        var obj;
+        
+
+        $.getJSON("tempJson/ClientNotification.json", function(data){
+            for(i in data)
+            {
+                tableDat+= '<tr>';
+                    table += '<td>' + data[i]['timestamp'] + '</td>';
+                    table += '<td>' + data[i]['clientID'] + '</td>';
+                    table += '<td>' + data[i]['code'] + '</td>';
+                    table += '<td>' + data[i]['description'] + '</td>';
+                tableDat += '</tr>'
+            }
+            tableDat += "</tbody></table>";
+            $(".info").html(tableDat);
+        });
+    }
+    ClientInformation();
 
     function NFC(){
         var table = '<table class="table"><thead><th>Date</th><th>StatusCode</th><th>method</th><th>url</th><th>cardId</th><th>ip</th></thead><tbody>';
@@ -79,6 +102,8 @@ $(document).ready(function(){
             // 2019-01-13T12%3A49%3A37.0000&end=2019-03-13T12%3A49%3A37.0000
              request("https://atm.draper.net.za/api/logs","2019-01-13T00:00:00.0000","2019-03-14T00:00:00.0000")
             //console.log(jsonObj);
+
+
         }
         
     });
