@@ -107,7 +107,7 @@ Socialising*
 
 ###### **Attitudes:**
 > *I am a highly motivated and hardworking individual who is currently in in my final year of BSc Computer Science.*
-*
+
 
 `
 `
@@ -237,7 +237,7 @@ Socialising*
 > *I am a final year BSC Computer Science student with C++, C#, Java, JSON, HTML, Visual Basic .Net, PHP, SQL*
 
 ###### **Work Experience:**
-> **
+> *None*
 
 ###### **Attitudes:**
 > *I am a enthusiatstic programmers who finds excitement in learning new things and exploring the fields of computer programming.*
