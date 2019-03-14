@@ -41,6 +41,32 @@ $(document).ready(function(){
             });
     }
 
+    function NFC(){
+        var table = '<table class="table"><thead><th>Date</th><th>StatusCode</th><th>method</th><th>url</th><th>cardId</th><th>ip</th></thead><tbody>';
+        var obj;
+
+       $.getJSON("tempJson/NFC_data.json",function(data){
+            for (i in data){
+                table += '<tr>';
+                    idate = new Date(data[i]['date']);
+                    table += '<td>'+ idate.toLocaleString() +'</td>';
+                    //table += '<td>'+ Date(data[i]['date']).toString() +'</td>';
+                    table += '<td>'+ data[i]['statusCode'] +'</td>';
+                    table += '<td>'+ data[i]['method'] +'</td>';
+                    table += '<td>'+ data[i]['url'] +'</td>';
+                    table += '<td>'+ data[i]['parameters']['cardId'] +'</td>';
+                    table += '<td>'+ data[i]['ip'] +'</td>';
+                table += '</tr>';
+            }
+            
+            //console.log(table);
+            table += "</tbody></table>";    
+            $(".info").html(table);
+        });        
+    }
+    
+    NFC();
+
     $(".submitBut").click(function(){
 
         var module = $(".moduleName").val();
