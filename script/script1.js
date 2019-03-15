@@ -13,6 +13,7 @@ $(document).ready(function(){
 
     function OTP()
     {
+        //OTP table generator inserts the html table in the div with the class name info/
         var table = '<table class="table"><thead><th>clientID</th><th>OTP</th><th>timeStamp</th><th>success</th></thead><tbody>';
         var obj;
 
@@ -34,10 +35,10 @@ $(document).ready(function(){
 
     function ClientInformation()
     {
+        //Client information table generator inserts the html table in the div with the class name info.
         var tableDat = '<table class="table"><thead><th>timestamp</th><th>clientID</th><th>code</th><th>description</th></thead><tbody>';
         var obj;
-        
-
+    
         $.getJSON("tempJson/ClientNotification_data.json", function(data){
             for(i in data)
             {
@@ -55,6 +56,7 @@ $(document).ready(function(){
 
  function NFC()
  {
+     //NFC table generator inserts the html table in the div with the class name info.
     var table = '<table class="table"><thead><th>Date</th><th>StatusCode</th><th>method</th><th>url</th><th>cardId</th><th>ip</th></thead><tbody>';
     var obj;
 
@@ -92,15 +94,15 @@ $(document).ready(function(){
       
         if(module == "ATM Simulation")
         {
-           
+           //todo: make ATM simulation table
         }
         if(module == "Authenticaion")
         {
-           
+           //todo: make Authenticaion simulation table
         }
         if(module == "Facial Recognition")
         {
-            
+            //todo: make Facial Recognition simulation table
         }
         if(module == "NFC")
         {
@@ -124,6 +126,7 @@ $(document).ready(function(){
                 doc.addImage(imgData, 'JPEG', 15, 15, 90, 38);
                 doc.text("NFC Report",15,70);
                 $("table tr").each(function(index) {
+                    //makes pdf for NFC
                     var $tds = $(this).find('td');
                             var x1 = $tds.eq(0).text();
                             var x2 = $tds.eq(1).text();
@@ -172,11 +175,11 @@ $(document).ready(function(){
         }
         if(module == "Client Information System")
         {
-            
+            //TODO: make client information table
         }
         if(module == "Client Accounts System")
         {
-            
+             //TODO: Client Accounts System
         }
         if(module == "Client Notification")
         {
