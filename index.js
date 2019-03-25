@@ -86,6 +86,6 @@ app.post('/api', function (req, res) {//where people will post their json to
     res.end();
 });
 
-app.listen(3000, function(){ //must be at end of js file
-    console.log("Listening on port 3000!");
+app.listen(8080, function(){ //must be at end of js file
+    console.log("Listening on port 8080!");
 });
