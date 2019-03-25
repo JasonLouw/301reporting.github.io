@@ -1,0 +1,62 @@
+{  
+    "1":{  
+       "timestamp":"1570244953",
+       "clientID":"C5964",
+       "code":201,
+       "description":"Email sent successfully"
+    },
+    "2":{  
+       "timestamp":"1570158553",
+       "clientID":"C2634",
+       "code":500,
+       "description":"Internal server error"
+    },
+    "3":{  
+        "timestamp":"1541387353",
+        "clientID":"C0489",
+        "code":201,
+        "description":"Email sent successfully"
+     },
+     "4":{  
+        "timestamp":"1541992153",
+        "clientID":"C7255",
+        "code":201,
+        "description":"Email sent successfully"
+     },
+     "5":{  
+        "timestamp":"1542078553",
+        "clientID":"C1591",
+        "code":201,
+        "description":"Email sent successfully"
+     },
+     "6":{  
+        "timestamp":"1544152153",
+        "clientID":"C9382",
+        "code":500,
+        "description":"Internal server error"
+     },
+     "7":{  
+        "timestamp":"1573700953",
+        "clientID":"C2514",
+        "code":201,
+        "description":"Email sent successfully"
+     },
+     "8":{  
+        "timestamp":"1573268953",
+        "clientID":"C5444",
+        "code":201,
+        "description":"Email sent successfully"
+     },
+     "9":{  
+        "timestamp":"1573355353",
+        "clientID":"C4439",
+        "code":500,
+        "description":"Internal server error"
+     },
+     "10":{  
+        "timestamp":"1574478553",
+        "clientID":"C4439",
+        "code":201,
+        "description":"Email sent successfully"
+     }
+ }

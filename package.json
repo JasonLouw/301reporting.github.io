@@ -1,0 +1,17 @@
+{
+  "name": "fnbreporting",
+  "version": "1.0.0",
+  "description": "FNB OCEAN REPORTING",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "OCEAN REPORTING",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.4",
+    "mongodb": "^3.2.2",
+    "pug": "^2.0.3"
+  }
+}
