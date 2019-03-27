@@ -1,2 +1,5 @@
 user: admin
 pass: awO0xT2QFpxTRU80
+
+user: dbAdmin
+pass: Sd8EKNEUQWH7JGMl
