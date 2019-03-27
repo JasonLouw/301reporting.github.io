@@ -5,14 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node index.js"
+    "start": "node index.js",
+    "postinstall": "echo 'meow'"
   },
   "author": "OCEAN REPORTING",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
     "express": "^4.16.4",
+    "jquery": "^3.3.1",
     "mongodb": "^3.2.2",
-    "pug": "^2.0.3"
+    "pug": "^2.0.3",
+    "rsvp": "^4.8.4"
   }
 }

@@ -5,6 +5,18 @@
     width: 360px;
 }
 
+.info
+{
+    padding-top: 60px;
+    width: 100%;
+
+}
+
+.table
+{
+  width: 80%;
+}
+
 .bigLogoRow
 {
     margin-top: 40px;
@@ -107,3 +119,11 @@
  
     width: 100px;
 }
+
+.downloadPDF
+{
+    text-align: center;
+}
+
+
+
