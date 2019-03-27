@@ -2,10 +2,10 @@
   Database operations
   ============================
   1. Insert (subsystem, data)
-    -> Inserts an array of records into the required database
+    -> Inserts a JSON array of records into the required database
 
   2. Fetch (subsystem)
-    -> An array containing all of the records in a given collection
+    -> Returns a JSON array containing all of the records in a given collection
 */
 
 dbase = require('./dbase.js');
