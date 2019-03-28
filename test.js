@@ -6,3 +6,7 @@ client.connect(err => {
   // perform actions on the collection object
   client.close();
 });
+
+database.purge("Status").then((outcome)=>{
+  console.log("outcome: " + JSON.stringify(outcome, null, 2));
+});
