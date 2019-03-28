@@ -2,7 +2,7 @@
 var express = require('express');
 //var mongo = require('mongodb').MongoClient;
 var cors = require('cors');
-var $ = require('jQuery');
+var $ = require('jquery');
 var app = express();
 var database = require('./databaseOperations.js');
 
@@ -21,17 +21,17 @@ app.use(cors());
 app.set('views', 'views');
 app.set('view engine', 'pug');
 
-/*  
+/*
     im assuming this includes the folder your wana use
     so that you have to always type out the full file
-    paths or something 
+    paths or something
 */
 
     app.use(express.static('frontEnd'));
     app.use(express.static('testPost'));
-   
+
      //Write databse Insert/Update/Query code here..
-                
+
 
     app.get('/', function (req, res) {//front end
         console.log("here");
@@ -44,43 +44,47 @@ app.set('view engine', 'pug');
         var data = req.body.data;
         console.log(data);
 
-        if (req.body.system !== undefined && req.body.data !== undefined) 
+        if (req.body.system !== undefined && req.body.data !== undefined)
         {
             console.log("system defined");
             if(system == "ATMSS")//atm simulation
             {
-                var jo = JSON.parse(data); 
+                var jo = JSON.parse(data);
                 database.insert("ATMSS",jo);
-                var fetched = database.fetch("ATMSS");
-                console.log("fetched: "+JSON.stringify(fetched)+"-end");
+                var fetched;
+
+                database.fetch("ATMSS").then((items)=>{
+                    fetched = items;
+                    console.log("fetched: "+JSON.stringify(fetched, null, 2)+"-end");
+                });
             }
             else if(system == "AUTH")//Authentication
             {
-         
+
             }
             else if(system == "CRDS")//Card authentication
             {
-               
+
             }
             else if(system == "OTPS")//OTP authentication
             {
-                
+
             }
             else if(system == "FRS")//Facial recognition
             {
-                
+
             }
             else if(system == "CIS")//client information
             {
-                
+
             }
             else if(system == "CAS")//Client Accounts
             {
-               
+
             }
             else if(system == "NS")//Notifications
             {
-                
+
             }
             else if(system == "REP")//Reportings
 

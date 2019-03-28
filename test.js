@@ -1,10 +1,10 @@
-const MongoClient = require(‘mongodb’).MongoClient;
-const uri = "mongodb+srv://admin:awO0xT2QFpxTRU80@cluster0-5sv23.gcp.mongodb.net/mongoDatabase?retryWrites=true";
-const client = new MongoClient(uri, { useNewUrlParser: true });
-client.connect(err => {
-  const collection = client.db("mongoDatabase").collection("messages");
-  // perform actions on the collection object
-  client.close();
+var database = require('./databaseOperations.js');
+
+var fetched;
+
+database.fetch("ATMSS").then((items)=>{
+    fetched = items;
+    console.log("fetched: "+JSON.stringify(fetched, null, 2)+"-end");
 });
 
 database.purge("Status").then((outcome)=>{
