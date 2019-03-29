@@ -1,9 +1,14 @@
 $(document).ready(function(){
-
+    
     console.log("jquery working..");
+    var startDate;
+    var endDate;
+   
 
     function request(url, system1, startDate1, endDate1)
     {
+        startDate = startDate1;
+        endDate =endDate1;
         $.get( url, {system: system1, start:startDate1,end:endDate1}, 
         function( data ) 
         {
@@ -16,6 +21,7 @@ $(document).ready(function(){
             if(system1 == "AUTH")
             {
                 authTable(data);
+                authGraphs(data);
       
             }
             if(system1 == "FRS")
@@ -49,29 +55,7 @@ $(document).ready(function(){
         });
     }
 
-    // function myFunction() {
-    //     // Declare variables 
-    //     console.log("sort");
-    //     var input, filter, table, tr, td, i, txtValue;
-    //     input = document.getElementById("#myInput");
-    //     filter = input.value.toUpperCase();
-    //     table = document.getElementById("myTable");
-    //     tr = table.getElementsByTagName("tr");
-      
-    //     // Loop through all table rows, and hide those who don't match the search query
-    //     for (i = 0; i < tr.length; i++) {
-    //       td = tr[i].getElementsByTagName("td")[0];
-    //       if (td) {
-    //         txtValue = td.textContent || td.innerText;
-    //         if (txtValue.toUpperCase().indexOf(filter) > -1) {
-    //           tr[i].style.display = "";
-    //         } else {
-    //           tr[i].style.display = "none";
-    //         }
-    //       } 
-    //     }
-    //   }
-
+ 
 
       $('body').on('keyup', '.ch', function() {
          // Declare variables 
@@ -106,15 +90,185 @@ $(document).ready(function(){
          }
       });
 
+      
+
+    var grow = true;
+      $('body').on('click', '.hideBut', function() {
+          console.log("hide");
+          if(grow)
+          {
+            var table = $('body').find('#myTable').toggle();
+            $('body').find('#myInput1').toggle();
+            $('body').find('.hideBut').html("Show Table");
+            $('body').find('.tables').css("height","200px");
+            grow = false;
+          }
+          else
+          {
+            var table = $('body').find('#myTable').toggle("slow", "swing");
+            $('body').find('#myInput1').toggle();
+            $('body').find('.hideBut').html("Hide Table");
+            $('body').find('.tables').css("height","100vh");
+            $('body').find('#ch').toggle();
+            grow = true;
+          }
+      });
+
+      function chartOne(obj)
+      {
+        var Data =[];
+        Data[0] = 0;
+        Data[1] = 0;
+        Data[2] = 0;
+        Data[3] = 0;
+        for(var i = 0; i < obj.length; i++)
+        {
+            if(obj[i]['Authentication'] == 'Password')
+            {
+                Data[0]++;
+            }
+            if(obj[i]['Authentication'] == 'NFC')
+            {
+                Data[1]++;
+            }
+            if(obj[i]['Authentication'] == 'Facial Recognition')
+            {
+                Data[2]++;
+            }
+            if(obj[i]['Authentication'] == 'OTP')
+            {
+                Data[3]++;
+            }
+        }
+        // 1420070400
+        // 1420156800
+        // 1420243200//86400
+        var ctx = $('body').find('#myChart');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Password', 'NFC', 'Facial Recognition', 'OTP',],
+                datasets: [{
+                    label: '# of Votes',
+                    data: Data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                       
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                
+            }
+        });
+      }
+
+      function chartTwo(obj)
+      {
+
+        var timeDiff = Math.abs(endDate - startDate);
+        var dayDifference = Math.ceil(timeDiff / (1000 * 3600 * 24));
+        console.log(dayDifference);
+        var Data =[];
+        var Label =[];
+        var currenttime = startDate;
+        for(var i = 0; i<dayDifference; i++)
+        {
+
+             Data[i] = 0;
+        }
+        for(var i = 0; i<dayDifference; i++)
+        {
+
+            // Data[i] = 0;
+            Label[i] = convert(currenttime);
+            for(var j = 0; j < obj.length; j++)
+            {
+               
+                if(obj[j]['timestamp'] >= currenttime &&  obj[j]['timestamp'] <= currenttime+86400000)
+                {
+
+                    console.log("+"+obj[j]['timestamp']);
+                    Data[i]++;
+                }
+               
+            }
+            currenttime = currenttime+86400000;
+        }
+     
+      
+        // 1420070400
+        // 1420156800
+        // 1420243200//86400
+        var ctx = $('body').find('#myChart2');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: Label,
+                datasets: [{
+                    label: 'Daily users',
+                    data: Data,
+                    backgroundColor: 
+                        'rgba(255, 99, 132, 0.2)'
+                       
+                    ,
+                    borderColor: 
+                        'rgba(255, 99, 132, 1)'
+                        
+                    ,
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                
+            }
+        });
+      }
+
+      function authGraphs(data)
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
+        
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Types of Authentication</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
+        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Daily Acivity</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+        
+
+        var end = '</div>';
+      
+        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
+
+        
+        chartOne(data);
+        chartTwo(data);
+        
+      }
+
     function authTable(data)
     {
         $(".tables").html("");//dont change
-        var heading = '<h1 class="tableHeading">Authentication report</h1>';//dont change
+        var heading = '<h1 class="tableHeading">AUTHENTICATION REPORT</h1>';// change heading
+        heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+        // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+        // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
         heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
         //dont change above
 
 
-        var table = '<table id="myTable"><tr class="header"><th>timestamp</th><th>Client ID</th><th>Authentication</th><th>state</th></tr><tbody>';
+        var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>Client ID</th><th>Authentication</th><th>state</th></tr><tbody>';
 
         for(i in data)
         {
@@ -127,6 +281,22 @@ $(document).ready(function(){
         }
         table += "</tbody></table>";
         $(".tables").html(heading+table);//dont change
+
+
+        //this allows for exports
+        $('body').find('#myTable').tableExport({
+            headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+            footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+            formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+            fileName: "report",                    // (id, String), filename for the downloaded file
+            bootstrap: true,                   // (Boolean), style buttons using bootstrap
+            position: "top" ,                // (top, bottom), position of the caption element relative to table
+            ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+            ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+            ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+            emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+            trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+        });
       
        
     }
