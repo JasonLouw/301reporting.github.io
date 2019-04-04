@@ -9,50 +9,62 @@ $(document).ready(function(){
     {
         startDate = startDate1;
         endDate =endDate1;
+
+        if (system1 == "NFC")
+          system1 = "CRDS";
+
+        if (system1 == "OTP")
+          system1 = "OTPS";
+
         $.get( url, {system: system1, start:startDate1,end:endDate1},
         function( data )
         {
             console.log(data);
+            console.log('\n' + system1);
 
-            if(system1 == "ATMSS")
-            {
+            if(system1 == "ATMSS"){
               atmssTable(data);
             }
 
-            if(system1 == "AUTH")
-            {
+            if(system1 == "AUTH"){
                 authTable(data);
                 authGraphs(data);
-
             }
-            if(system1 == "FRS")
-            {
+
+            if(system1 == "FRS"){
               frsTable(data);
               frsGraphs(data);
             }
-            if(system1 == "NFC")
-            {
 
+            if(system1 == "CRDS"){
+              crdsGraphs(data);
+              crdsTable(data);
             }
-            if(system1 == "OTPS")
-            {
 
+            if(system1 == "OTPS"){
+              otpsGraphs(data);
+              otpsTable(data);
             }
-            if(system1 == "CIS")
-            {
 
+            if(system1 == "CIS"){
+              cisGraphs(data);
+              cisTable(data);
             }
-            if(system1 == "CAS")
-            {
 
+            if(system1 == "CAS"){
+              casGraphs(data);
+              casTable(data);
             }
-            if(system1 == "NS")
-            {
 
+            if(system1 == "NS"){
+              nsGraphs(data);
+              nsTable(data);
             }
+
             if(system1 == "REP")
             {
-
+              repGraphs(data);
+              repTable(data);
             }
         });
     }
@@ -151,7 +163,7 @@ $(document).ready(function(){
             data: {
                 labels: ['Password', 'NFC', 'Facial Recognition', 'OTP',],
                 datasets: [{
-                    label: '# of Votes',
+                    label: '# of Records',
                     data: Data,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -175,7 +187,6 @@ $(document).ready(function(){
             }
         });
       }
-
       function chartTwo(obj)
       {
 
@@ -242,7 +253,6 @@ $(document).ready(function(){
       //ATMSS
       function atmssGraphs(data)
       {}
-
       function atmssTable(data)
       {
         $(".tables").html("");//dont change
@@ -255,7 +265,7 @@ $(document).ready(function(){
         //dont change above
 
 
-        var table = '<table id="myTable" string="what"><tr class="header"><th>Transaction Type</th><th>Amount</th><th>Date</th><th>Time</th></tr><tbody>';
+        var table = '<table id="myTable" string="what"><tr class="header table"><th>Timestamp</th><th>URL</th><th>Response Code</th><th>Sent</th></tr><tbody>';
 
         console.log(JSON.stringify(data[60], null, 2));
 
@@ -263,9 +273,10 @@ $(document).ready(function(){
         {
             table+= '<tr>';
                 table += '<td>' + convert(data[i]['timestamp']) + '</td>';
-                table += '<td>' + data[i]['Amount'] + '</td>';
-                table += '<td>' + data[i]['Date'] + '</td>';
-                table += '<td>' + data[i]['Time'] + '</td>';
+                table += '<td><a href="'+data[i]['url']+'">' + data[i]['url'] + '</a></td>';
+
+                table += '<td>' + data[i]['response_code'] + '</td>';
+                table += '<td>' + data[i]['sent'] + '</td>';
             table += '</tr>'
         }
         table += "</tbody></table>";
@@ -309,7 +320,6 @@ $(document).ready(function(){
         chartTwo(data);
 
       }
-
       function authTable(data)
       {
           $(".tables").html("");//dont change
@@ -327,7 +337,7 @@ $(document).ready(function(){
           for(i in data)
           {
               table+= '<tr>';
-                  table += '<td>' + data[i]['timestamp'] + '</td>';
+                  table += '<td>' + convert(data[i]['timestamp']) + '</td>';
                   table += '<td>' + data[i]['ClientID'] + '</td>';
                   table += '<td>' + data[i]['Authentication'] + '</td>';
                   table += '<td>' + data[i]['State'] + '</td>';
@@ -375,7 +385,7 @@ $(document).ready(function(){
             data: {
                 labels: ['Success', 'Failiure'],
                 datasets: [{
-                    label: '# of Votes',
+                    label: '# of Records',
                     data: Data,
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
@@ -393,7 +403,6 @@ $(document).ready(function(){
             }
         });
       }
-
       function frsGraphs(data)
       {
         $(".graphs").html("");
@@ -412,7 +421,6 @@ $(document).ready(function(){
         frsSuccessChart(data);
         chartTwo(data);
       }
-
       function frsTable(data)
       {
         $(".tables").html("");//dont change
@@ -458,45 +466,708 @@ $(document).ready(function(){
 
       //NFC / CRDS
       function crdsGraphs(data)
-      {}
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
 
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Daily Activity</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+
+
+        var end = '</div>';
+
+        $(".graphs").html(start + results +chart+ end);//dont change
+
+        chartTwo(data);
+      }
       function crdsTable(data)
-      {}
+      {
+        $(".tables").html("");//dont change
+        var heading = '<h1 class="tableHeading">NFC REPORT</h1>';// change heading
+        heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+        // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+        // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
+        heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
+        //dont change above
+
+
+        var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>ip</th><th>Card Number</th></tr><tbody>';
+
+        for(i in data)
+        {
+            table+= '<tr>';
+                table += '<td>' + convert(data[i]['timestamp']) + '</td>';
+                table += '<td>' + data[i]['ip'] + '</td>';
+
+                var query = JSON.parse(data[i]['query']);
+
+                if (query['rfid'])
+                  table += '<td><b>RFID:</b> ' + query['rfid'] + '</td>';
+                else
+                  if (query['cardNumber'])
+                    table += '<td><b>Card Number</b> ' + query['cardNumber'] + '</td>';
+                  else
+                    table += '<td>none'+ '</td>';
+
+            table += '</tr>'
+        }
+        table += "</tbody></table>";
+        $(".tables").html(heading+table);//dont change
+
+
+        //this allows for exports
+        $('body').find('#myTable').tableExport({
+            headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+            footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+            formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+            fileName: "report",                    // (id, String), filename for the downloaded file
+            bootstrap: true,                   // (Boolean), style buttons using bootstrap
+            position: "top" ,                // (top, bottom), position of the caption element relative to table
+            ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+            ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+            ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+            emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+            trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+        });
+      }
 
       //OTPS
-      function otpsGraphs(data)
-      {}
+      function otpsSuccessChart(obj)
+      {
+        var Data =[];
+        Data[0] = 0;
+        Data[1] = 0;
 
+        for(var i = 0; i < obj.length; i++){
+            if(obj[i]['success'])
+              Data[0]++;
+            else
+              Data[1]++;
+        }
+
+        var ctx = $('body').find('#myChart');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Success', 'Failiure'],
+                datasets: [{
+                    label: '# of Records',
+                    data: Data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+
+            }
+        });
+      }
+      function otpsGraphs(data)
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
+
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >OTP Success Rate</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
+        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >OTP Usage per Day</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+
+
+        var end = '</div>';
+
+        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
+
+
+        otpsSuccessChart(data);
+        chartTwo(data);
+      }
       function otpsTable(data)
-      {}
+      {
+        $(".tables").html("");//dont change
+        var heading = '<h1 class="tableHeading">OTP REPORT</h1>';// change heading
+        heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+        // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+        // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
+        heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
+        //dont change above
+
+
+        var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>clientID</th><th>success</th></tr><tbody>';
+
+        for(i in data)
+        {
+            table+= '<tr>';
+                table += '<td>' + convert(data[i]['timestamp']) + '</td>';
+                table += '<td>' + data[i]['clientID'] + '</td>';
+                table += '<td>' + data[i]['success'] + '</td>';
+            table += '</tr>'
+        }
+        table += "</tbody></table>";
+        $(".tables").html(heading+table);//dont change
+
+
+        //this allows for exports
+        $('body').find('#myTable').tableExport({
+            headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+            footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+            formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+            fileName: "report",                    // (id, String), filename for the downloaded file
+            bootstrap: true,                   // (Boolean), style buttons using bootstrap
+            position: "top" ,                // (top, bottom), position of the caption element relative to table
+            ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+            ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+            ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+            emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+            trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+        });
+      }
 
       //CIS
-      function cisGraphs(data)
-      {}
+      function cisChart(obj)
+      {
+        var Data =[];
+        Data[0] = 0;
+        Data[1] = 0;
+        Data[2] = 0;
+        Data[3] = 0;
+        Data[4] = 0;
+        for(var i = 0; i < obj.length; i++)
+        {
+            if(obj[i]['transaction_type'] == 'INSERT')
+            {
+                Data[0]++;
+            }
+            if(obj[i]['transaction_type'] == 'UPDATED')
+            {
+                Data[1]++;
+            }
+            if(obj[i]['transaction_type'].match(/DELETE/g))
+            {
+                Data[2]++;
+            }
+            if(obj[i]['transaction_type'] == 'REACTIVATED')
+            {
+                Data[3]++;
+            }
+            if(obj[i]['transaction_type'].match(/RETRIEVE/g))
+            {
+                Data[4]++;
+            }
+        }
+        // 1420070400
+        // 1420156800
+        // 1420243200//86400
+        var ctx = $('body').find('#myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Insertions', 'Updates', 'Deletions', 'Reactivations','Retrievals'],
+                datasets: [{
+                    label: '# of Records',
+                    data: Data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(192, 75, 192, 0.2)',
 
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(192, 75, 192, 0.2)',
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+
+            }
+        });
+      }
+      function cisGraphs(data)
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
+
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Transacton Types</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
+        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Daily Activity</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+
+
+        var end = '</div>';
+
+        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
+
+
+        cisChart(data);
+        chartTwo(data);
+      }
       function cisTable(data)
-      {}
+      {
+
+        $(".tables").html("");//dont change
+
+        var heading = '<h1 class="tableHeading">Client Information System REPORT</h1>';// change heading
+        heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+        // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+        // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
+        heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
+        //dont change above
+
+
+        var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>clientID</th><th>Transaction ID</th><th>Transaction Type</th></tr><tbody>';
+
+        for(i in data)
+        {
+            table+= '<tr>';
+                table += '<td>' + data[i]['timestamp'] + '</td>';
+                table += '<td>' + data[i]['client_id'] + '</td>';
+                table += '<td>' + data[i]['transaction_id'] + '</td>';
+                table += '<td>' + data[i]['transaction_type'] + '</td>';
+            table += '</tr>';
+        }
+
+        table += "</tbody></table>";
+        $(".tables").html(heading+table);//dont change
+
+
+        //this allows for exports
+        $('body').find('#myTable').tableExport({
+            headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+            footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+            formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+            fileName: "report",                    // (id, String), filename for the downloaded file
+            bootstrap: true,                   // (Boolean), style buttons using bootstrap
+            position: "top" ,                // (top, bottom), position of the caption element relative to table
+            ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+            ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+            ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+            emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+            trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+        });
+      }
+
 
       //CAS
-      function cisGraphs(data)
-      {}
+      function casChart(obj)
+      {
+        var Data =[];
+        Data[0] = 0;
+        Data[1] = 0;
+        Data[2] = 0;
+        Data[3] = 0;
+        Data[4] = 0;
+        for(var i = 0; i < obj.length; i++)
+        {
+            if(obj[i]['event'] == 'Client Account Created')
+            {
+                Data[0]++;
+            }
+            if(obj[i]['event'] == 'Client Accounts Requested')
+            {
+                Data[1]++;
+            }
+            if(obj[i]['event'] == 'Added Client')
+            {
+                Data[2]++;
+            }
+            if(obj[i]['event'] == 'Deposit')
+            {
+                Data[3]++;
+            }
+            if(obj[i]['event']== "Client Deactivation Requested by CIS")
+            {
+                Data[4]++;
+            }
+        }
+        // 1420070400
+        // 1420156800
+        // 1420243200//86400
+        var ctx = $('body').find('#myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+              labels: ['Created', 'Requested', 'Added', 'Deposit','Deactivation'],
+                datasets: [{
+                    label: '# of Records',
+                    data: Data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(192, 75, 192, 0.2)',
 
-      function cisTable(data)
-      {}
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(192, 75, 192, 0.2)',
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+
+            }
+        });
+      }
+      function casGraphs(data)
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
+
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Transacton Types</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
+        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Daily Activity</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+
+
+        var end = '</div>';
+
+        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
+
+
+        casChart(data);
+        chartTwo(data);
+      }
+      function casTable(data)
+      {
+        $(".tables").html("");//dont change
+
+        var heading = '<h1 class="tableHeading">Client Accounts System REPORT</h1>';// change heading
+        heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+        // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+        // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
+        heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
+        //dont change above
+
+
+        var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>Event</th><th>ClientID</th><th>Amount</th></tr><tbody>';
+
+        for(i in data)
+        {
+            table+= '<tr>';
+                table += '<td>' + convert(data[i]['timestamp']) + '</td>';
+                table += '<td>' + data[i]['event'] + '</td>';
+                table += '<td>' + data[i]['clientID'] + '</td>';
+                table += '<td>' + data[i]['amount'] + '</td>';
+            table += '</tr>';
+        }
+
+        table += "</tbody></table>";
+        $(".tables").html(heading+table);//dont change
+
+
+        //this allows for exports
+        $('body').find('#myTable').tableExport({
+            headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+            footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+            formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+            fileName: "report",                    // (id, String), filename for the downloaded file
+            bootstrap: true,                   // (Boolean), style buttons using bootstrap
+            position: "top" ,                // (top, bottom), position of the caption element relative to table
+            ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+            ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+            ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+            emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+            trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+        });
+      }
 
       //NS
-      function nsGraphs(data)
-      {}
+      function nsChart(obj)
+      {
+        var Data =[];
+        Data[0] = 0;
+        Data[1] = 0;
+        Data[2] = 0;
+        Data[3] = 0;
+        for(var i = 0; i < obj.length; i++)
+        {
+            if(obj[i]['code'] == '250')
+            {
+                Data[0]++;
+            }
+            if(obj[i]['code'] == '550')
+            {
+                Data[1]++;
+            }
+            if(obj[i]['code'] == '421')
+            {
+                Data[2]++;
+            }
+            if(obj[i]['code'] == '422')
+            {
+                Data[3]++;
+            }
+        }
+        // 1420070400
+        // 1420156800
+        // 1420243200//86400
+        var ctx = $('body').find('#myChart');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['EmailSuccess', 'EmailNotExist', 'ServerError', 'StorageFull',],
+                datasets: [{
+                    label: '# of Records',
+                    data: Data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
 
-      function nsTables(data)
-      {}
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+
+            }
+        });
+      }
+      function nsGraphs(data)
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
+
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Notification Types</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
+        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Daily Activity</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+
+
+        var end = '</div>';
+
+        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
+
+
+        nsChart(data);
+        chartTwo(data);
+      }
+      function nsTable(data)
+      {
+        $(".tables").html("");//dont change
+
+        var heading = '<h1 class="tableHeading">Notification System REPORT</h1>';// change heading
+        heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+        // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+        // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
+        heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
+        //dont change above
+
+
+        var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>ClientID</th><th>Code</th><th>Description</th></tr><tbody>';
+
+        for(i in data)
+        {
+            table+= '<tr>';
+                table += '<td>' + convert(data[i]['timestamp']) + '</td>';
+                table += '<td>' + data[i]['clientID'] + '</td>';
+                table += '<td>' + data[i]['code'] + '</td>';
+                table += '<td>' + data[i]['description'] + '</td>';
+            table += '</tr>';
+        }
+
+        table += "</tbody></table>";
+        $(".tables").html(heading+table);//dont change
+
+
+        //this allows for exports
+        $('body').find('#myTable').tableExport({
+            headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+            footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+            formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+            fileName: "report",                    // (id, String), filename for the downloaded file
+            bootstrap: true,                   // (Boolean), style buttons using bootstrap
+            position: "top" ,                // (top, bottom), position of the caption element relative to table
+            ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+            ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+            ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+            emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+            trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+        });
+      }
 
       //REP
-      function repGraps(data)
-      {}
+      function repChart(obj)
+      {
+        var Data =[];
+        Data[0] = 0;
+        Data[1] = 0;
+        Data[2] = 0;
+        Data[3] = 0;
+        Data[4] = 0;
+        Data[5] = 0;
+        Data[6] = 0;
+        Data[7] = 0;
+        Data[8] = 0;
 
+        for(var i = 0; i < obj.length; i++)
+        {
+            if(obj[i]['system'] == 'ATMSS')
+            {
+                Data[0]++;
+            }
+            if(obj[i]['system'] == 'AUTH')
+            {
+                Data[1]++;
+            }
+            if(obj[i]['system'] == 'CAS')
+            {
+                Data[2]++;
+            }
+            if(obj[i]['system'] == 'CIS')
+            {
+                Data[3]++;
+            }
+            if(obj[i]['system'] == 'CRDS')
+            {
+                Data[4]++;
+            }
+            if(obj[i]['system'] == 'FRS')
+            {
+                Data[5]++;
+            }
+            if(obj[i]['system'] == 'NS')
+            {
+                Data[6]++;
+            }
+            if(obj[i]['system'] == 'OTPS')
+            {
+                Data[7]++;
+            }
+            if(obj[i]['system'] == 'REP')
+            {
+                Data[8]++;
+            }
+        }
+        // 1420070400
+        // 1420156800
+        // 1420243200//86400
+        var ctx = $('body').find('#myChart');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['ATMSS', 'AUTH', 'CAS', 'CIS','CRDS', 'FRS', 'NS', 'OTPS','REP',],
+                datasets: [{
+                    label: '# of Records',
+                    data: Data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+
+                        'rgba(99,255, 132, 0.2)',
+                        'rgba(54, 235, 162, 0.2)',
+                        'rgba(86, 255, 206,  0.2)',
+                        'rgba(192, 75, 192, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(99,255, 132, 0.2)',
+                        'rgba(54, 235, 162, 0.2)',
+                        'rgba(86, 255, 206,  0.2)',
+                        'rgba(192, 75, 192, 0.2)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+
+            }
+        });
+      }
+      function repGraphs(data)
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
+
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Subsystems</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
+        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Daily Activity</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+
+
+        var end = '</div>';
+
+        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
+
+
+        repChart(data);
+        chartTwo(data);
+      }
       function repTable(data)
-      {}
+      {
+        $(".tables").html("");//dont change
+
+        var heading = '<h1 class="tableHeading">Notification System REPORT</h1>';// change heading
+        heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+        // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+        // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
+        heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
+        //dont change above
+
+
+        var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>Subsystem</th></tr><tbody>';
+
+        for(i in data)
+        {
+            table+= '<tr>';
+                table += '<td>' + data[i]['timestamp'] + '</td>';
+                table += '<td>' + data[i]['system'] + '</td>';
+            table += '</tr>';
+        }
+
+        table += "</tbody></table>";
+        $(".tables").html(heading+table);//dont change
+
+
+        //this allows for exports
+        $('body').find('#myTable').tableExport({
+            headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+            footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+            formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+            fileName: "report",                    // (id, String), filename for the downloaded file
+            bootstrap: true,                   // (Boolean), style buttons using bootstrap
+            position: "top" ,                // (top, bottom), position of the caption element relative to table
+            ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+            ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+            ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+            emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+            trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+        });
+      }
 
     function convert(uni)//converts time stamp into readable date
     {
