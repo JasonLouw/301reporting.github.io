@@ -2,7 +2,7 @@
 var express = require('express');
 //var mongo = require('mongodb').MongoClient;
 var cors = require('cors');
-//var $ = require('jQuery');
+var $ = require('jquery');
 var app = express();
 var database = require('./databaseOperations.js');
 
@@ -21,17 +21,17 @@ app.use(cors());
 app.set('views', 'views');
 app.set('view engine', 'pug');
 
-/*  
+/*
     im assuming this includes the folder your wana use
     so that you have to always type out the full file
-    paths or something 
+    paths or something
 */
 
     app.use(express.static('frontEnd'));
     app.use(express.static('testPost'));
-   
+
      //Write databse Insert/Update/Query code here..
-                
+
 
     app.get('/', function (req, res) {//front end
         res.sendfile('/index.html');
@@ -120,7 +120,7 @@ app.set('view engine', 'pug');
         var data = req.body.data;
         console.log(data);
 
-        if (req.body.system !== undefined && req.body.data !== undefined) 
+        if (req.body.system !== undefined && req.body.data !== undefined)
         {
             console.log("system defined");
             if(system == "ATMSS")//atm simulation
