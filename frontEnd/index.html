@@ -1,70 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
+<html>
+<head>
+
         <title>FNB REPORTING</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <script src="jquery/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.5/jspdf.debug.js"></script>
-     
-        <link rel="stylesheet" href="css/style1.css">
+        <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+      
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="css/styleToolBar.css">
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+        
         <!--fonts below-->
         <link href="https://fonts.googleapis.com/css?family=Roboto:500" rel="stylesheet">
-        <style>
-        </style>
-    </head>
-    <body>
+    
+<style>
 
-            <div class="row toplineRow">
-                    <div class="col-md-12 col-lg-12 toplineRow"></div>
+</style>
+</head>
+<body>
+
+
+<div class="container toolBar">
+        <div class="row toolBarRow1">
+            <div class="col-md-3 col-lg-3 col-sm-3 col-xs-12 moduleNameCol">
+                <select name="Modules" class="moduleName">
+                        <option value="" selected disabled hidden>SUBSYSTEM</option>
+                    <option value="ATM Simulation">ATM Simulation</option>
+                    <option value="Authenticaion">Authentication</option>
+                    <option value="Facial Recognition">Facial Recognition</option>
+                    <option value="NFC">NFC</option>
+                    <option value="OTP">OTP</option>
+                    <option value="Client Information System">Client Information System</option>
+                    <option value="Client Accounts System">Client Accounts System</option>
+                    <option value="Client Notification">Client Notification</option>
+                    <option value="REP">Reporting</option>
+                </select>  
+                  
             </div>
-
-        <div class="row bigLogoRow">
-            <div class="col-md-12 col-lg-12 bigLogoCol"><img src="images/fnbLogoBig.png" alt="FNB Logo" class="fnbBigLogo"></div>
-        </div>
-
-        <!--<div class="row lineRow">
-                <div class="col-md-12 col-lg-12 toplineRow"></div>
-        </div>-->
-        
-       <div class="row lineRow2">
-            <div class="col-md-4 col-lg-4 leftLineRow"></div>
-            <div class="col-md-4 col-lg-4 fnbReporting"><p>ATM REPORTS</p></div>
-            <div class="col-md-4 col-lg-4 rightLineRow"></div>
-        </div>
-
-            <div class="row FormSelect">  
-                <div class="col-md-2 col-lg-2"></div>
-                <div class="col-md-8 col-lg-8 formCol">
-                    <form action="" class="formWidth">
-                        <table style="width:100%" class="formWidth">
-                            <tr>
-                                <td class="formCol1">  modules:
-                                    <select name="Modules" class="moduleName">
-                                    <option value="ATM Simulation">ATM Simulation</option>
-                                    <option value="Authenticaion">Authenticaion</option>
-                                    <option value="Facial Recognition">Facial Recognition</option>
-                                    <option value="NFC">NFC</option>
-                                    <option value="OTP">OTP</option>
-                                    <option value="Client Information System">Client Information System</option>
-                                    <option value="Client Accounts System">Client Accounts System</option>
-                                    <option value="Client Notification">Client Notification</option>
-                                    </select>  
-                                </td> 
-                                <td class="formCol2">start:<input type="date" class="startDate"></td>
-                                <td class="formCol3">end:<input type="date" class="endDate"></td>
-                                <td class="formCol4"><button class="submitBut" value="submit" type="button">submit</button></td>
-                            </tr>
-                        </table>
-                    </form>
-                </div> 
-            </div>
-
-            <div class="info"></div>
             
-        <script src="script/stylejs.js"></script>
-        <script src="script/script1.js"></script>
-    </body>
+            <div class="col-md-9 col-lg-9 col-sm-9 col-xs-12 bar">
+                    <div class="row">
+                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 leftDate"><input type="text" id="amount" readonly ></div>
+                        <div class="col-md-6 col-lg-6 col-sm-6 col-xs-6" id="slider-range"></div>
+                        <div class="col-md-3 col-lg-3 col-sm-3 col-xs-3 rightDate"><input type="text" id="amount1" readonly ></div>
+                    </div>
+            </div>
+            
+        </div>
+    </div>
+
+    <img src="images/fnbLogoBig.png" width="300px" height="120px" class="firstImage"/>
+    <!-- <input type="text" id="amount3" value="REPORTS" readonly > -->
+    
+
+    <div class="container data">
+        <div class="row">
+                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 graphs">
+                
+                </div> 
+                <div class="col-md-6 col-lg-6 col-sm-12 col-xs-12 tables">
+                    
+
+                </div>
+        </div>
+    </div>
+   
+
+
+
+   
+    
+    <script src="FileSaver/FileSaver.js"></script>
+
+    <script src="TableExport/tableexport.js"></script>
+    <script src="script/stylejs.js"></script>
+    <script src="script/script1.js"></script>
+</body>
 </html>
