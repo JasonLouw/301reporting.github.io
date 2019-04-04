@@ -46,44 +46,44 @@ app.set('view engine', 'pug');
             database.purge(req.query.system).then((items)=>{
                     console.log("purged");
                 });
-               
+
         }
     });
 
     app.get('/purgeall',function(req, res)
     {
-        
+
             database.purge("ATMSS").then((items)=>{
-                   
+
                 });
                 database.purge("AUTH").then((items)=>{
-                   
+
                 });
                 database.purge("FRS").then((items)=>{
-                   
+
                 });
                 database.purge("NFC").then((items)=>{
-                  
+
                 });
                 database.purge("OTPS").then((items)=>{
-                    
+
                 });
                 database.purge("CIS").then((items)=>{
-                    
+
                 });
                 database.purge("CAS").then((items)=>{
-                 
+
                 });
                 database.purge("NS").then((items)=>{
-                    
+
                 });
                 database.purge("REP").then((items)=>{
-                    
+
                 });
 
                 console.log("purged all");
-             
-        
+
+
     });
 
     app.get('/db',function(req, res)
@@ -197,7 +197,7 @@ app.set('view engine', 'pug');
     });
 
     app.listen(process.env.PORT || 3000, function(){ //must be at end of js file
-        console.log("Listening on port 4004");
+        console.log("Listening on port 3000");
         //process.exit();
     });
 

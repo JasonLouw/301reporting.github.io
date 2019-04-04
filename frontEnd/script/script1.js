@@ -1,64 +1,66 @@
 $(document).ready(function(){
-    
+
     console.log("jquery working..");
     var startDate;
     var endDate;
-   
+
 
     function request(url, system1, startDate1, endDate1)
     {
         startDate = startDate1;
         endDate =endDate1;
-        $.get( url, {system: system1, start:startDate1,end:endDate1}, 
-        function( data ) 
+        $.get( url, {system: system1, start:startDate1,end:endDate1},
+        function( data )
         {
             console.log(data);
-      
+
             if(system1 == "ATMSS")
             {
-            
+              atmssTable(data);
             }
+
             if(system1 == "AUTH")
             {
                 authTable(data);
                 authGraphs(data);
-      
+
             }
             if(system1 == "FRS")
             {
-            
+              frsTable(data);
+              frsGraphs(data);
             }
             if(system1 == "NFC")
             {
-            
+
             }
             if(system1 == "OTPS")
             {
-                
+
             }
             if(system1 == "CIS")
             {
-                
+
             }
             if(system1 == "CAS")
             {
-                
+
             }
             if(system1 == "NS")
             {
-                
+
             }
             if(system1 == "REP")
             {
-                
+
             }
         });
     }
 
- 
+
 
       $('body').on('keyup', '.ch', function() {
-         // Declare variables 
+         // Declare variables
          console.log("sort");
          var input, filter, table, tr, td, i, txtValue;
          input = $('body').find('#myInput1').val();
@@ -66,31 +68,31 @@ $(document).ready(function(){
          filter = input.toUpperCase();
          table = $('body').find("#myTable");
          tr = $('body').find("tr");
-       
+
          // Loop through all table rows, and hide those who don't match the search query
-         for (i = 0; i < tr.length; i++) 
+         for (i = 0; i < tr.length; i++)
          {
            td = tr[i].getElementsByTagName("td");
            for(j = 0; j<td.length; j++)
            {
-            if (td[j]) 
+            if (td[j])
             {
                 txtValue = td[j].textContent || td[j].innerText;
-                if (txtValue.toUpperCase().indexOf(filter) > -1) 
+                if (txtValue.toUpperCase().indexOf(filter) > -1)
                 {
                     tr[i].style.display = "";
                     break;
-                } 
-                else 
+                }
+                else
                 {
                     tr[i].style.display = "none";
                 }
             }
-            } 
+            }
          }
       });
 
-      
+
 
     var grow = true;
       $('body').on('click', '.hideBut', function() {
@@ -156,20 +158,20 @@ $(document).ready(function(){
                         'rgba(54, 162, 235, 0.2)',
                         'rgba(255, 206, 86, 0.2)',
                         'rgba(75, 192, 192, 0.2)',
-                       
+
                     ],
                     borderColor: [
                         'rgba(255, 99, 132, 1)',
                         'rgba(54, 162, 235, 1)',
                         'rgba(255, 206, 86, 1)',
                         'rgba(75, 192, 192, 1)',
-                        
+
                     ],
                     borderWidth: 1
                 }]
             },
             options: {
-                
+
             }
         });
       }
@@ -195,19 +197,19 @@ $(document).ready(function(){
             Label[i] = convert(currenttime);
             for(var j = 0; j < obj.length; j++)
             {
-               
+
                 if(obj[j]['timestamp'] >= currenttime &&  obj[j]['timestamp'] <= currenttime+86400000)
                 {
 
                     console.log("+"+obj[j]['timestamp']);
                     Data[i]++;
                 }
-               
+
             }
             currenttime = currenttime+86400000;
         }
-     
-      
+
+
         // 1420070400
         // 1420156800
         // 1420243200//86400
@@ -219,47 +221,32 @@ $(document).ready(function(){
                 datasets: [{
                     label: 'Daily users',
                     data: Data,
-                    backgroundColor: 
+                    backgroundColor:
                         'rgba(255, 99, 132, 0.2)'
-                       
+
                     ,
-                    borderColor: 
+                    borderColor:
                         'rgba(255, 99, 132, 1)'
-                        
+
                     ,
                     borderWidth: 1
                 }]
             },
             options: {
-                
+
             }
         });
       }
 
-      function authGraphs(data)
+
+      //ATMSS
+      function atmssGraphs(data)
+      {}
+
+      function atmssTable(data)
       {
-        $(".graphs").html("");
-        var start ='<div class="container graphCont">';
-        
-        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
-        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Types of Authentication</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
-        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Daily Acivity</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
-        
-
-        var end = '</div>';
-      
-        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
-
-        
-        chartOne(data);
-        chartTwo(data);
-        
-      }
-
-    function authTable(data)
-    {
         $(".tables").html("");//dont change
-        var heading = '<h1 class="tableHeading">AUTHENTICATION REPORT</h1>';// change heading
+        var heading = '<h1 class="tableHeading">ATM Simulation REPORT</h1>';// change heading
         heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
         // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
         // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
@@ -268,15 +255,17 @@ $(document).ready(function(){
         //dont change above
 
 
-        var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>Client ID</th><th>Authentication</th><th>state</th></tr><tbody>';
+        var table = '<table id="myTable" string="what"><tr class="header"><th>Transaction Type</th><th>Amount</th><th>Date</th><th>Time</th></tr><tbody>';
+
+        console.log(JSON.stringify(data[60], null, 2));
 
         for(i in data)
         {
             table+= '<tr>';
-                table += '<td>' + data[i]['timestamp'] + '</td>';
-                table += '<td>' + data[i]['ClientID'] + '</td>';
-                table += '<td>' + data[i]['Authentication'] + '</td>';
-                table += '<td>' + data[i]['State'] + '</td>';
+                table += '<td>' + convert(data[i]['timestamp']) + '</td>';
+                table += '<td>' + data[i]['Amount'] + '</td>';
+                table += '<td>' + data[i]['Date'] + '</td>';
+                table += '<td>' + data[i]['Time'] + '</td>';
             table += '</tr>'
         }
         table += "</tbody></table>";
@@ -297,11 +286,217 @@ $(document).ready(function(){
             emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
             trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
         });
-      
-       
-    }
 
-    
+      }
+
+      //AUTH
+      function authGraphs(data)
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
+
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Types of Authentication</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
+        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Daily Acivity</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+
+
+        var end = '</div>';
+
+        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
+
+
+        chartOne(data);
+        chartTwo(data);
+
+      }
+
+      function authTable(data)
+      {
+          $(".tables").html("");//dont change
+          var heading = '<h1 class="tableHeading">AUTHENTICATION REPORT</h1>';// change heading
+          heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+          // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+          // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
+          heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
+          //dont change above
+
+
+          var table = '<table id="myTable" string="what"><tr class="header"><th>timestamp</th><th>Client ID</th><th>Authentication</th><th>state</th></tr><tbody>';
+
+          for(i in data)
+          {
+              table+= '<tr>';
+                  table += '<td>' + data[i]['timestamp'] + '</td>';
+                  table += '<td>' + data[i]['ClientID'] + '</td>';
+                  table += '<td>' + data[i]['Authentication'] + '</td>';
+                  table += '<td>' + data[i]['State'] + '</td>';
+              table += '</tr>'
+          }
+          table += "</tbody></table>";
+          $(".tables").html(heading+table);//dont change
+
+
+          //this allows for exports
+          $('body').find('#myTable').tableExport({
+              headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+              footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+              formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+              fileName: "report",                    // (id, String), filename for the downloaded file
+              bootstrap: true,                   // (Boolean), style buttons using bootstrap
+              position: "top" ,                // (top, bottom), position of the caption element relative to table
+              ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+              ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+              ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+              emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+              trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+          });
+
+
+      }
+
+      //FRS
+      function frsSuccessChart(obj)
+      {
+        var Data =[];
+        Data[0] = 0;
+        Data[1] = 0;
+
+        for(var i = 0; i < obj.length; i++){
+            if(obj[i]['Success'])
+              Data[0]++;
+            else
+              Data[1]++;
+        }
+
+        var ctx = $('body').find('#myChart');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Success', 'Failiure'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: Data,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+
+            }
+        });
+      }
+
+      function frsGraphs(data)
+      {
+        $(".graphs").html("");
+        var start ='<div class="container graphCont">';
+
+        var results = '<div class="row Rows"><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 numResults" >Number of Results</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 Results" >'+data.length+'</div></div>';
+        var chart1 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Facial Recognition Success Rate</div><div class="col-md-6 col-lg-6 col-sm-6 col-xs-6 chart1" ><canvas id="myChart" width="200" height="200"></canvas></div></div>';
+        var chart2 = '<div class="row Rows"><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12" >Facial Recognition Usage per Day</div><div class="col-md-12 col-lg-12 col-sm-12 col-xs-12 chart1" ><canvas id="myChart2" width="400" height="200"></canvas></div></div>';
+
+
+        var end = '</div>';
+
+        $(".graphs").html(start + results +chart1+ chart2+ end);//dont change
+
+
+        frsSuccessChart(data);
+        chartTwo(data);
+      }
+
+      function frsTable(data)
+      {
+        $(".tables").html("");//dont change
+        var heading = '<h1 class="tableHeading">AUTHENTICATION REPORT</h1>';// change heading
+        heading +='<button class="hideBut" type="button">Hide Table</button>';//dont change
+        // heading +='<button class="pdf" type="button">Export to PDF</button>';//dont change
+        // heading +='<button class="excel" type="button">Export to Excel</button>';//dont change
+        heading += '<input class="ch" type="text" id="myInput1" placeholder="Search Table">';//dont change
+
+        //dont change above
+
+
+        var table = '<table id="myTable" string="what"><tr class="header"><th>Time</th><th>Client ID</th><th>Success</th></tr><tbody>';
+
+        for(i in data)
+        {
+            table+= '<tr>';
+                table += '<td>' + convert(data[i]['timestamp']) + '</td>';
+                table += '<td>' + data[i]['ID'] + '</td>';
+                table += '<td>' + data[i]['Success'] + '</td>';
+
+            table += '</tr>'
+        }
+        table += "</tbody></table>";
+        $(".tables").html(heading+table);//dont change
+
+
+        //this allows for exports
+        $('body').find('#myTable').tableExport({
+            headings: true,                    // (Boolean), display table headings (th/td elements) in the <thead>
+            footers: true,                     // (Boolean), display table footers (th/td elements) in the <tfoot>
+            formats: ["xls", "csv", "txt"],    // (String[]), filetypes for the export
+            fileName: "report",                    // (id, String), filename for the downloaded file
+            bootstrap: true,                   // (Boolean), style buttons using bootstrap
+            position: "top" ,                // (top, bottom), position of the caption element relative to table
+            ignoreRows: null,                  // (Number, Number[]), row indices to exclude from the exported file(s)
+            ignoreCols: null,                  // (Number, Number[]), column indices to exclude from the exported file(s)
+            ignoreCSS: ".tableexport-ignore",  // (selector, selector[]), selector(s) to exclude from the exported file(s)
+            emptyCSS: ".tableexport-empty",    // (selector, selector[]), selector(s) to replace cells with an empty string in the exported file(s)
+            trimWhitespace: false              // (Boolean), remove all leading/trailing newlines, spaces, and tabs from cell text in the exported file(s)
+        });
+      }
+
+      //NFC / CRDS
+      function crdsGraphs(data)
+      {}
+
+      function crdsTable(data)
+      {}
+
+      //OTPS
+      function otpsGraphs(data)
+      {}
+
+      function otpsTable(data)
+      {}
+
+      //CIS
+      function cisGraphs(data)
+      {}
+
+      function cisTable(data)
+      {}
+
+      //CAS
+      function cisGraphs(data)
+      {}
+
+      function cisTable(data)
+      {}
+
+      //NS
+      function nsGraphs(data)
+      {}
+
+      function nsTables(data)
+      {}
+
+      //REP
+      function repGraps(data)
+      {}
+
+      function repTable(data)
+      {}
 
     function convert(uni)//converts time stamp into readable date
     {
@@ -315,7 +510,7 @@ $(document).ready(function(){
         var seconds = "0" + date.getSeconds();
         // Display date time in MM-dd-yyyy h:m:s format
         var convdataTime = month+' '+day+' '+year+' '+hours + ':' + minutes.substr(-2) + ':' + seconds.substr(-2);
-        
+
         return convdataTime;
     }
 
@@ -340,11 +535,11 @@ $(document).ready(function(){
         {
             changing();
         }
-      });    
+      });
         $( "#amount" ).val( convert(1546300800000));
         $( "#amount1" ).val( convert(end));
         //slider bar end
-        
+
 
     function OTP()
     {
@@ -373,7 +568,7 @@ $(document).ready(function(){
         //Client information table generator inserts the html table in the div with the class name info.
         var tableDat = '<table class="table"><thead><th>timestamp</th><th>clientID</th><th>code</th><th>description</th></thead><tbody>';
         var obj;
-    
+
         $.getJSON("tempJson/ClientNotification_data.json", function(data){
             for(i in data)
             {
@@ -408,11 +603,11 @@ $(document).ready(function(){
                 table += '<td>'+ data[i]['ip'] +'</td>';
             table += '</tr>';
         }
-        
+
         //console.log(table);
-        table += "</tbody></table>";    
+        table += "</tbody></table>";
         $(".info").html(table);
-    });        
+    });
 }
 
 function changing(){
@@ -462,15 +657,15 @@ function changing(){
         //     var one = false;
         //     var doc = new jsPDF();
         //     var imgData = '';
-        //     doc.addImage(imgData, 'JPEG', 15, 15, 90, 38); doc.text("NFC Report",15,70); $("table tr").each(function(index) { //makes pdf for NFC 
-        //         var $tds = $(this).find('td'); 
-        //         var x1 = $tds.eq(0).text(); 
-        //         var x2 = $tds.eq(1).text(); 
-        //         var x3 = $tds.eq(2).text(); 
-        //         var x4 = $tds.eq(3).text(); 
-        //         var x5 = $tds.eq(4).text(); 
-        //         var x6 = $tds.eq(5).text(); 
-        //         console.log(x1+" "+x2+" "+x3+" "+x4+" "+x5+" "+x6); 
+        //     doc.addImage(imgData, 'JPEG', 15, 15, 90, 38); doc.text("NFC Report",15,70); $("table tr").each(function(index) { //makes pdf for NFC
+        //         var $tds = $(this).find('td');
+        //         var x1 = $tds.eq(0).text();
+        //         var x2 = $tds.eq(1).text();
+        //         var x3 = $tds.eq(2).text();
+        //         var x4 = $tds.eq(3).text();
+        //         var x5 = $tds.eq(4).text();
+        //         var x6 = $tds.eq(5).text();
+        //         console.log(x1+" "+x2+" "+x3+" "+x4+" "+x5+" "+x6);
         //         if(one)
         //                 {
         //                     if(x1 != "")
@@ -499,7 +694,7 @@ function changing(){
         //                 }
         //                 one = true;
 
-                    
+
         //     });
         //     doc.save('nfcReport.pdf')
         // });
@@ -533,5 +728,5 @@ function changing(){
     } );
 
 
-  
+
 });
