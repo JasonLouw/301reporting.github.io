@@ -35,6 +35,7 @@ app.set('view engine', 'pug');
 
     app.get('/', function (req, res) {//front end
         res.sendfile('/index.html');
+        res.end();
     });
 
     app.get('/purge',function(req, res)
@@ -46,14 +47,15 @@ app.set('view engine', 'pug');
             database.purge(req.query.system).then((items)=>{
                     console.log("purged");
                 });
-               
+            res.write('{"Status":"purginged subystem"}');
         }
+        res.end();
     });
 
     app.get('/purgeall',function(req, res)
     {
         
-            database.purge("ATMSS").then((items)=>{
+                database.purge("ATMSS").then((items)=>{
                    
                 });
                 database.purge("AUTH").then((items)=>{
@@ -80,8 +82,10 @@ app.set('view engine', 'pug');
                 database.purge("REP").then((items)=>{
                     
                 });
-
+                res.write('{"Status":"purging all subsystems"}');
                 console.log("purged all");
+
+                res.end();
              
         
     });
@@ -118,7 +122,7 @@ app.set('view engine', 'pug');
         res.header("Access-Control-Allow-Origin", "*");
         var system = req.body.system;
         var data = req.body.data;
-        console.log(data);
+        console.log("yip "+req.body["system"]);
 
         if (req.body.system !== undefined && req.body.data !== undefined) 
         {
@@ -127,13 +131,18 @@ app.set('view engine', 'pug');
             {
                 var jo = JSON.parse(data);
                 database.insert("ATMSS",jo);
+                var rep = '[{"system":"ATMSS","timestamp":"'+Date.now()+'"}]';
+                database.insert("ATMSS",JSON.parse(rep));
+                res.write('{"Status":"uploaded to ATM simulation database"}');
             }
             else if(system == "AUTH")//Authentication
             {
                 var jo = JSON.parse(data);
                 database.insert("AUTH",jo);
+
                 var rep = '[{"system":"AUTH","timestamp":"'+Date.now()+'"}]';
                 database.insert("REP",JSON.parse(rep));
+                res.write('{"Status":"uploaded to Authentication database"}');
             }
             else if(system == "CRDS")//Card authentication
             {
@@ -141,6 +150,7 @@ app.set('view engine', 'pug');
                 database.insert("CRDS",jo);
                 var rep = '[{"system":"CRDS","timestamp":"'+Date.now()+'"}]';
                 database.insert("REP",JSON.parse(rep));
+                res.write('{"Status":"uploaded to Card authentication database"}');
             }
             else if(system == "OTPS")//OTP authentication
             {
@@ -148,6 +158,7 @@ app.set('view engine', 'pug');
                 database.insert("OTPS",jo);
                 var rep = '[{"system":"OTPS","timestamp":"'+Date.now()+'"}]';
                 database.insert("REP",JSON.parse(rep));
+                res.write('{"Status":"uploaded to OTP authentication database"}');
             }
             else if(system == "FRS")//Facial recognition
             {
@@ -155,6 +166,7 @@ app.set('view engine', 'pug');
                 database.insert("FRS",jo);
                 var rep = '[{"system":"FRS","timestamp":"'+Date.now()+'"}]';
                 database.insert("REP",JSON.parse(rep));
+                res.write('{"Status":"uploaded to Facial recognition database"}');
             }
             else if(system == "CIS")//client information
             {
@@ -162,6 +174,7 @@ app.set('view engine', 'pug');
                 database.insert("CIS",jo);
                 var rep = '[{"system":"CIS","timestamp":"'+Date.now()+'"}]';
                 database.insert("REP",JSON.parse(rep));
+                res.write('{"Status":"uploaded to client information database"}');
             }
             else if(system == "CAS")//Client Accounts
             {
@@ -169,6 +182,7 @@ app.set('view engine', 'pug');
                 database.insert("CAS",jo);
                 var rep = '[{"system":"CAS","timestamp":"'+Date.now()+'"}]';
                 database.insert("REP",JSON.parse(rep));
+                res.write('{"Status":"uploaded to Client Accounts database"}');
             }
             else if(system == "NS")//Notifications
             {
@@ -176,22 +190,24 @@ app.set('view engine', 'pug');
                 database.insert("NS",jo);
                 var rep = '[{"system":"NS","timestamp":"'+Date.now()+'"}]';
                 database.insert("REP",JSON.parse(rep));
+                res.write('{"Status":"uploaded to Notifications database"}');
             }
             else if(system == "REP")//Reportings
 
             {
                 var jo = JSON.parse(data);
                 database.insert("REP",jo);
+                res.write('{"Status":"uploaded to reporting"}');
                 //this is our subsystem
             }
             else
             {
-                res.write('{"ERROR":"correct parameters, wrong subsysetm"}');
+                res.write('{"ERROR":"correct parameters, wrong subsystem"}');
             }
         }
         else
         {
-            res.write('{"ERROR":"correct parameters or Not url encoded"}');
+            res.write('{"ERROR":"incorrect parameters, use system and data"}');
         }
         res.end();
     });
